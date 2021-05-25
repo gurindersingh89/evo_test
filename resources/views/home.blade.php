@@ -15,6 +15,9 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+                    @if (Route::has('posts'))
+                        <a href="{{ route('posts') }}" class="ml-4 text-sm text-gray-700 underline">View Posts</a>
+                    @endif
                 </div>
             </div>
         </div>
