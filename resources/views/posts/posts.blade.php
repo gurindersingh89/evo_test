@@ -12,6 +12,7 @@
                     <thead>
                         <tr class="table-success">
                             <th scope="col">Id</th>
+                            <th scope="col">Username</th>
                             <th scope="col">Name</th>
                             <th scope="col">Action</th>
                         </tr>
@@ -20,6 +21,7 @@
                         @foreach($posts as $data)
                         <tr row_id="{{$data->id}}">
                             <th scope="row">{{ $data->id }}</th>
+                            <td>{{ $data->user->name }}</td>
                             <td>{{ $data->name }}</td>
                             <td><button type="button" class="btn btn-primary edit"  row_id="{{$data->id}}">Edit</button>
                                 <button type="button" class="btn btn-danger delete" row_id="{{$data->id}}">Delete</button>

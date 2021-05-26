@@ -16,7 +16,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::simplePaginate(10);
+        $posts = Post::with('user')->whereUserId(auth()->id())->simplePaginate(10);
         return view('posts.posts', compact('posts'));
     }
 
@@ -41,6 +41,8 @@ class PostController extends Controller
         // $post->save();
 
         // 3
+
+        $post->user_id = auth()->id();
         $post->fill($request->validated());
         $post->save();
 

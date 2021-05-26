@@ -20,6 +20,6 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class
         ]);
 
-        \App\Models\Post::factory(50)->create();
+        \App\Models\Post::factory(10)->create();
     }
 }
