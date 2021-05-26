@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    private $message = 'Post Saved Successfully';
     /**
      * Display a listing of the resource.
      *
@@ -14,18 +15,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::simplePaginate();
+        $posts = Post::simplePaginate(10);
         return view('posts.posts', compact('posts'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return 13;
     }
 
     /**
@@ -34,9 +25,18 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Post $post)
     {
-        return 89898;
+        $rules = [
+            'name' => ['required']
+        ];
+        $validate_attributes = $request->validate($rules);
+
+        $post->fill($validate_attributes);
+        $post->save();
+        // Post::create(['name' => $request->name]);
+
+        return array('type' => 'success','message' => $this->message, 'data' => $post);
     }
 
     /**
@@ -47,18 +47,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Post $post)
-    {
-        //
+        return array('type' => 'success', 'data' => $post);
     }
 
     /**
@@ -70,7 +59,13 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        return 13232;
+        $this->message = 'Post Updated Successfully';
+        return $this->store($request, $post);
+        
+        // $post->fill($request->all());
+        // $post->name = $request->name;
+        // $post->update();
+        // return array('type' => 'success', 'message' => 'Post Updated Successfully', 'data' => $post);
     }
 
     /**
@@ -82,5 +77,6 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
+        return response()->json([], 204);
     }
 }
