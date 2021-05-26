@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -25,18 +26,25 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Post $post)
+    public function store(PostRequest $request, Post $post)
     {
-        $rules = [
-            'name' => ['required']
-        ];
-        $validate_attributes = $request->validate($rules);
+        // $rules = [
+        //     'name' => ['required']
+        // ];
+        // $validate_attributes = $request->validate($rules);
 
-        $post->fill($validate_attributes);
-        $post->save();
+        // 1
         // Post::create(['name' => $request->name]);
 
-        return array('type' => 'success','message' => $this->message, 'data' => $post);
+        // 2
+        // $post->fill($validate_attributes);
+        // $post->save();
+
+        // 3
+        $post->fill($request->validated());
+        $post->save();
+
+        return array('type' => 'success', 'message' => $this->message, 'data' => $post);
     }
 
     /**
@@ -57,15 +65,17 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(PostRequest $request, Post $post)
     {
-        $this->message = 'Post Updated Successfully';
-        return $this->store($request, $post);
-        
+        // 1   
         // $post->fill($request->all());
         // $post->name = $request->name;
         // $post->update();
         // return array('type' => 'success', 'message' => 'Post Updated Successfully', 'data' => $post);
+
+        // 2
+        $this->message = 'Post Updated Successfully';
+        return $this->store($request, $post);
     }
 
     /**
